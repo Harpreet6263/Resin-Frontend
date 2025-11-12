@@ -4,40 +4,24 @@ import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Accordion, AccordionItem, Slider } from "@heroui/react";
 
-const Sidebar = () => {
-  const searchParams = useSearchParams();
-  const selectedCategory = searchParams.get("category"); // ✅ renamed for clarity
-
-  const categories = [
-    { name: "Bath" },
-    { name: "Kitchen" },
-    { name: "New" },
-    { name: "On the Go" },
-    { name: "Sale" },
-  ];
-  const [value, setValue] = useState([50, 10000])
+const Sidebar = ({ budgetValue, setBudgetValue, categories, categorySelected, setCategorySelected }) => {
+  // const searchParams = useSearchParams();
+  // const selectedCategory = searchParams.get("category");
 
   return (
     <div className="w-[280px] hidden md:flex flex-col gap-5 text-[#403F2B]">
       <p className="text-2xl fraunces ">Browse by</p>
       <div className="w-full border-b-2 h-1 border-gray-200"></div>
       <div className="flex flex-col gap-3 mb-4">
-        <Link
-          href="/products"
-          className={`block hover:underline ${!selectedCategory ? "underline" : ""}`}
-        >
-          All Products
-        </Link>
-
         {categories.map((cat, index) => (
-          <Link
+          <p
             key={index}
-            href={`/products?category=${encodeURIComponent(cat.name)}`}
-            className={`block hover:underline ${selectedCategory === cat.name ? "underline" : ""
+            className={`block hover:underline cursor-pointer ${categorySelected === cat.id ? "underline" : ""
               }`}
+            onClick={() => { setCategorySelected(cat?.id) }}
           >
             {cat.name}
-          </Link>
+          </p>
         ))}
       </div>
       <div>
@@ -57,8 +41,8 @@ const Sidebar = () => {
               maxValue={10000}
               minValue={50}
               step={10}
-              value={value}
-              onChange={setValue}
+              value={budgetValue}
+              onChange={setBudgetValue}
               size="sm"
             />
           </AccordionItem>
