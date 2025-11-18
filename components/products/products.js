@@ -50,7 +50,7 @@ const Products = ({ product_id }) => {
 
         const decrypted = CryptoJS.AES.decrypt(decoded, crypto_key);
         let data = decrypted.toString(CryptoJS.enc.Utf8);
-        data = JSON.parse(data);
+        data = JSON.parse(data);        
 
         setCategorySelected(data.category);
         setBudgetValue(data.budget);

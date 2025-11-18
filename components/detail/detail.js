@@ -1,15 +1,59 @@
-import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
+"use client";
+import { setCartCount } from '@/store/slice/cart';
+import { ChevronLeftIcon, ChevronRightIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { Accordion, AccordionItem, Button } from '@heroui/react';
 import React, { useEffect, useState } from 'react'
 import ImageGallery from "react-image-gallery";
-// import "react-image-gallery/styles/scss/image-gallery.scss";
 import "react-image-gallery/styles/css/image-gallery.css";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { useDispatch, useSelector } from 'react-redux';
+import CoruselComponent from '../CoruselComponent/coruselComponent';
 
 const Detail = ({ product_id, setProductName }) => {
+  const dispatch = useDispatch()
+  const { cartCount } = useSelector(state => state.cart)
+
   const [detail, setDetail] = useState({});
   const [images, setImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
+
+  const [relatedImages, setRelatedImages] = useState([
+    {
+      id: 1,
+      img: "https://static.wixstatic.com/media/c837a6_5de8806975bb49d980a0aeb2df4eb9cd~mv2.jpg/v1/fill/w_246,h_328,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_5de8806975bb49d980a0aeb2df4eb9cd~mv2.jpg",
+      bestseller: true,
+      name: "Eco Glass",
+      price: "5.50"
+    },
+    {
+      id: 2,
+      img: "https://static.wixstatic.com/media/c837a6_caf6a6c62e80459ba63c9eb984d6a6bb~mv2.jpg/v1/fill/w_246,h_328,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_caf6a6c62e80459ba63c9eb984d6a6bb~mv2.jpg",
+      bestseller: false,
+      name: "Seawood Natural Soap",
+      price: "6.50"
+    },
+    {
+      id: 3,
+      img: "https://static.wixstatic.com/media/c837a6_e838ceeef1cc477ba4825b21f9f962ba~mv2.jpg/v1/fill/w_246,h_328,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_e838ceeef1cc477ba4825b21f9f962ba~mv2.jpg",
+      bestseller: false,
+      name: "Stainless Steel Bottle",
+      price: "25.00"
+    },
+    {
+      id: 4,
+      img: "https://static.wixstatic.com/media/c837a6_a568444e48684d32bb82ed0222281565~mv2.jpg/v1/fill/w_246,h_328,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_a568444e48684d32bb82ed0222281565~mv2.jpg",
+      bestseller: false,
+      name: "Compostable Kitchen Sponges",
+      price: "7.00"
+    },
+    {
+      id: 5,
+      img: "https://static.wixstatic.com/media/c837a6_00f5773295d145f8959baf2957fd3f51~mv2.jpg/v1/fill/w_246,h_328,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/c837a6_00f5773295d145f8959baf2957fd3f51~mv2.jpg",
+      bestseller: false,
+      name: "Wood Brush",
+      price: "7.00"
+    }
+  ])
   useEffect(() => {
     if (product_id == 1) {
       var data = {
@@ -84,15 +128,19 @@ const Detail = ({ product_id, setProductName }) => {
       setQuantity(quantity + 1);
     }
   }
+  const addtocart = () => {
+    dispatch(setCartCount(cartCount + quantity))
+  }
 
 
   return (
-    <div className='flex flex-col sm:flex-row w-full gap-10 helvetica text-[#403F2B] py-8'>
-      <div className='w-full sm:w-1/2 '>
-        <ImageGallery items={images} showNav={false} thumbnailPosition="bottom"
-        />
-        <style>
-          {`
+    <div className='w-full helvetica text-[#403F2B]'>
+      <div className='flex flex-col sm:flex-row w-full gap-10 py-8'>
+        <div className='w-full sm:w-1/2 '>
+          <ImageGallery items={images} showNav={false} thumbnailPosition="bottom"
+          />
+          <style>
+            {`
         .image-gallery-image {
           width: 100%;
           height: 50vh;
@@ -125,6 +173,12 @@ const Detail = ({ product_id, setProductName }) => {
           object-fit: cover;  
           object-position: center center;
         }
+        .image-gallery-slide-wrapper,
+        .image-gallery-swipe,
+        .image-gallery-slides,
+        .image-gallery-image {
+          touch-action: pan-y !important;  /* allow vertical page scroll */
+        }
         @media (max-width: 640px) {
           .image-gallery-thumbnail {
             width: 60px !important;
@@ -132,46 +186,51 @@ const Detail = ({ product_id, setProductName }) => {
           }
         }
   `}
-        </style>
-        <p className='my-14 hidden sm:block'>{detail.description}</p>
-      </div>
-      <div className='w-full sm:w-1/2 flex flex-col gap-5 sm:gap-10'>
-        <p className='text-3xl font-bold'>{detail.name}</p>
-        <p className='text-2xl font-extralight '>${detail.price?.toFixed(2)}</p>
-        <div>
-          <p className='text-sm mb-1'>Quantity *</p>
-          <div className=' flex items-center gap-4 border w-fit overflow-hidden rounded-lg'>
-            <div className='bg-[#403F2B]'>
-              <MinusIcon className='w-6 h-6 m-2 text-white cursor-pointer' onClick={() => { decreaseQuantity() }} />
-            </div>
-            <span className='font-bold'>{quantity}</span>
-            <div className='bg-[#403F2B]'>
-              <PlusIcon className='w-6 h-6 m-2 text-white cursor-pointer' onClick={() => { increaseQuantity() }} />
+          </style>
+          <p className='my-14 hidden sm:block'>{detail.description}</p>
+        </div>
+        <div className='w-full sm:w-1/2 flex flex-col gap-5 sm:gap-10'>
+          <p className='text-3xl font-bold'>{detail.name}</p>
+          <p className='text-2xl font-extralight '>${detail.price?.toFixed(2)}</p>
+          <div>
+            <p className='text-sm mb-1'>Quantity *</p>
+            <div className=' flex items-center gap-4 border w-fit overflow-hidden rounded-lg'>
+              <div className='bg-[#403F2B]'>
+                <MinusIcon className='w-6 h-6 m-2 text-white cursor-pointer' onClick={() => { decreaseQuantity() }} />
+              </div>
+              <span className='font-bold'>{quantity}</span>
+              <div className='bg-[#403F2B]'>
+                <PlusIcon className='w-6 h-6 m-2 text-white cursor-pointer' onClick={() => { increaseQuantity() }} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className='flex flex-col mt-4 sm:mt-0 gap-2'>
-          <Button className='bg-[#403F2B] hover:underline text-white w-full max-w-[350px] rounded-full'>Add to cart</Button>
-          <Button className='border border-[#403F2B] hover:underline bg-transparent w-full max-w-[350px] rounded-full'>Buy Now</Button>
-        </div>
-        <p className='block sm:hidden mt-4'>{detail.description}</p>
+          <div className='flex flex-col mt-4 sm:mt-0 gap-2'>
+            <Button className='bg-[#403F2B] hover:underline text-white w-full max-w-[350px] rounded-full' onClick={() => { addtocart() }}>Add to cart</Button>
+            <Button className='border border-[#403F2B] hover:underline bg-transparent w-full max-w-[350px] rounded-full'>Buy Now</Button>
+          </div>
+          <p className='block sm:hidden mt-4'>{detail.description}</p>
 
-        <Accordion defaultExpandedKeys={["1"]}>
-          <AccordionItem key="1" aria-label="Accordion 1" title="PRODUCT INFO" classNames={{
-            title: "font-semibold"
-          }}>
-            {detail?.info}
-          </AccordionItem>
-          {detail.shipping_info && <AccordionItem key="2" aria-label="Accordion 2" title="SHOPPING INFO" classNames={{
-            title: "font-semibold"
-          }}>
-            {detail?.shipping_info}
-          </AccordionItem>}
-        </Accordion>
+          <Accordion defaultExpandedKeys={["1"]}>
+            <AccordionItem key="1" aria-label="Accordion 1" title="PRODUCT INFO" classNames={{
+              title: "font-semibold text-black"
+            }}>
+              {detail?.info}
+            </AccordionItem>
+            {detail.shipping_info && <AccordionItem key="2" aria-label="Accordion 2" title="SHOPPING INFO" classNames={{
+              title: "font-semibold text-black"
+            }}>
+              {detail?.shipping_info}
+            </AccordionItem>}
+          </Accordion>
 
+        </div>
       </div>
-
+      <div className='w-full'>
+        <p className='text-2xl font-semibold my-5'>You Might Also Like</p>
+        <CoruselComponent images={relatedImages}/>
+      </div>
     </div>
+
   )
 }
 

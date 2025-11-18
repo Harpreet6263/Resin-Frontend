@@ -28,7 +28,7 @@ export default function Paginations(props) {
                 </div>
                 <div>
                     <nav className="isolate inline-flex gap-2 -space-x-px rounded-md shadow-sm relative z-10 md:hidden" aria-label="Paginations">
-                        <select onChange={e => setCurrentPage(e.target.value)} value={currentPage}>
+                        <select onChange={e => setCurrentPage(Number(e.target.value))} value={currentPage}>
                             <option disabled>
                                 Go to Page
                             </option>

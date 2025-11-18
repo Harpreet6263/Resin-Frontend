@@ -125,6 +125,8 @@ const Listing = ({ budgetValue, setBudgetValue, categories, categorySelected, se
 
   useEffect(() => {
     if (filterData) {
+      console.log("sort", filterData.sort);
+
       setSort(new Set([filterData.sort]));
       setCurrentPage(filterData.page);
       setTempSort(new Set([filterData.sort]));
@@ -168,23 +170,27 @@ const Listing = ({ budgetValue, setBudgetValue, categories, categorySelected, se
                 <div className='w-full'>
                   <p className="mb-2 w-fit">Sort by:</p>
                   <Select
-                    className="w-full"
+                    className="w-full text-black"
                     aria-label='--Select--'
                     size="sm"
                     selectedKeys={tempSort}
                     onSelectionChange={setTempSort}
                   >
                     {sorting.map((option) => (
-                      <SelectItem key={option.key}>{option.label}</SelectItem>
+                      <SelectItem key={option.key} className='text-black'>{option.label}</SelectItem>
                     ))}
                   </Select>
                 </div>
                 <div className="w-[96%] border-b h-1 border-gray-200"></div>
 
                 <Accordion>
-                  <AccordionItem key="1" aria-label="Accordion 1" title="Price">
+                  <AccordionItem key="1" aria-label="Accordion 1" title="Price" classNames={{
+                    title: "text-black",
+                    indicator: "text-black",   // arrow icon
+                    content: "text-black",     // inside content
+                  }}>
                     <Slider
-                      className="max-w-md"
+                      className="max-w-md text-black"
                       formatOptions={{
                         style: "currency",
                         currency: "INR",
@@ -200,13 +206,20 @@ const Listing = ({ budgetValue, setBudgetValue, categories, categorySelected, se
                       size="sm"
                     />
                   </AccordionItem>
-                  <AccordionItem key="2" aria-label="Accordion 2" title="Category">
+                  <AccordionItem key="2" aria-label="Accordion 2" title="Category" classNames={{
+                    title: "text-black",
+                    indicator: "text-black",   // arrow icon
+                    content: "text-black",     // inside content
+                  }}>
                     <RadioGroup
                       value={tempCategory}
                       onValueChange={setTempCategory}
                     >
                       {categories.map((cat, index) => (
-                        <Radio key={index} value={cat.id} size="sm">{cat.name}</Radio>
+                        <Radio key={index} value={cat.id} size="sm" classNames={{
+                          label: "text-black",
+                          base: "text-black"
+                        }}>{cat.name}</Radio>
                       ))}
                     </RadioGroup>
                   </AccordionItem>

@@ -13,15 +13,18 @@ const Breadcrumb = ({ categories, categorySelected, productName, filter }) => {
 
 
   const test = () => {
-    if (!filter || filter == null) return;
-    router.push(`/products?filter=${filter}`);
+    if (!filter || filter == null) {
+      router.push(`/products`);
+    } else {
+      router.push(`/products?filter=${filter}`);
+    }
   }
 
   return (
-    <div className='helvetica'>
-      <Breadcrumbs>
+    <div className='helvetica text-[#403F2B]'>
+      <Breadcrumbs className="max-sm:[&_*]:text-[#403F2B] max-sm:[&_*]:!text-opacity-100 max-sm:[&_*]:!opacity-100">
         <BreadcrumbItem href='/'>Home</BreadcrumbItem>
-        <BreadcrumbItem><p onClick={() => { test() }}>{matchedCategory?.name}</p></BreadcrumbItem>
+        {matchedCategory && <BreadcrumbItem><p onClick={() => { test() }}>{matchedCategory?.name}</p></BreadcrumbItem>}
         {productName && <BreadcrumbItem>{productName}</BreadcrumbItem>}
       </Breadcrumbs>
     </div>

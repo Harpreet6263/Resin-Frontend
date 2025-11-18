@@ -19,7 +19,7 @@ const Homepage = () => {
     <div className="w-full fraunces bg-[#fefaf0]">
 
       <div
-        className="bg-fixed bg-cover bg-center h-[90vh] w-full overflow-hidden"
+        className="sm:bg-fixed bg-cover bg-center h-[90vh] w-full overflow-hidden"
         style={{ backgroundImage: `url(${banner.src})` }}
       >
         <div className="flex items-center justify-center h-full bg-black/30 text-white">
@@ -68,7 +68,7 @@ const Homepage = () => {
           <motion.img
             initial={{ opacity: 0, translateX: 100 }}
             whileInView={{ opacity: 1, translateX: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={transition}
             src="https://static.wixstatic.com/media/c837a6_7525c017b9c54e089583eee948271588~mv2.jpg/v1/crop/x_209,y_1448,w_4040,h_3568/fill/w_541,h_478,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/shutterstock_2005823990.jpg"
             alt="image"
